@@ -1,103 +1,188 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+import React, { useState, useEffect } from "react";
+import ProductGallery from "@/components/ProductGallery";
+import ProductInfo from "@/components/ProductInfo";
+import { ShoppingCart } from "lucide-react";
+import { useCart } from "@/hooks/useCart";
+import CartDrawer from "@/components/CartDrawer";
+import { Sheet, SheetTrigger } from "@/components/ui/sheet";
+import ThemeToggle from "@/components/ThemeToggle";
+import { fetchProductById } from "@/api/products";
+import { Product } from "@/services/productService";
+import { Skeleton } from "@/components/ui/skeleton";
+import { FooterLinkGroup } from "@/components/FooterLinkGroup";
+import { useTheme } from "next-themes";
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+const Index = () => {
+    const { theme = "system" } = useTheme();
+    console.log(theme);
+    const { cart } = useCart();
+    const [product, setProduct] = useState<Product | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const loadProduct = async () => {
+            try {
+                setLoading(true);
+                const data = await fetchProductById("premium-headphones-01");
+                setProduct(data);
+                setError(null);
+            } catch (err) {
+                console.error("Failed to fetch product:", err);
+                setError("Failed to load product. Please try again later.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadProduct();
+    }, []);
+
+    const shopLinks = [
+        { href: "#", label: "Headphones" },
+        { href: "#", label: "Speakers" },
+        { href: "#", label: "Accessories" },
+        { href: "#", label: "Special Offers" },
+    ];
+
+    const supportLinks = [
+        { href: "#", label: "Contact Us" },
+        { href: "#", label: "FAQs" },
+        { href: "#", label: "Warranty" },
+        { href: "#", label: "Returns" },
+    ];
+
+    const companyLinks = [
+        { href: "#", label: "About Us" },
+        { href: "#", label: "Careers" },
+        { href: "#", label: "Privacy Policy" },
+        { href: "#", label: "Terms of Service" },
+    ];
+
+    return (
+        <div className="min-h-screen bg-background text-foreground">
+            {/* Header */}
+            <header className="border-b border-border bg-background">
+                <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                        <h2 className="text-xl font-bold">SoundCore</h2>
+                    </div>
+
+                    <div className="flex items-center space-x-4">
+                        <ThemeToggle />
+                        <Sheet>
+                            <SheetTrigger asChild>
+                                <button className="flex items-center text-foreground hover:text-foreground/80 transition-colors relative">
+                                    <ShoppingCart className="h-6 w-6 cursor-pointer" />
+                                    {cart.totalItems > 0 && (
+                                        <span className="absolute -top-2 -right-2 bg-product-blue text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                                            {cart.totalItems}
+                                        </span>
+                                    )}
+                                </button>
+                            </SheetTrigger>
+                            <CartDrawer />
+                        </Sheet>
+                    </div>
+                </div>
+            </header>
+
+            {/* Breadcrumbs */}
+            <div className="container mx-auto px-4 py-4">
+                <nav className="text-sm" aria-label="Breadcrumb">
+                    <ol className="flex space-x-2">
+                        <li>
+                            <a
+                                href="#"
+                                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                            >
+                                Home
+                            </a>
+                        </li>
+                        <li className="text-gray-500 dark:text-gray-400">/</li>
+                        <li>
+                            <a
+                                href="#"
+                                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                            >
+                                Audio
+                            </a>
+                        </li>
+                        <li className="text-gray-500 dark:text-gray-400">/</li>
+                        <li>
+                            <a
+                                href="#"
+                                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                            >
+                                Headphones
+                            </a>
+                        </li>
+                        <li className="text-gray-500 dark:text-gray-400">/</li>
+                        <li className="text-gray-900 dark:text-gray-200 font-medium" aria-current="page">
+                            {loading ? "Loading..." : product?.name || "Product"}
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+
+            {/* Product Section */}
+            <main className="container mx-auto px-4 py-8">
+                {error && (
+                    <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 p-4 rounded-md mb-8">
+                        {error}
+                    </div>
+                )}
+
+                {loading ? (
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                        <div className="aspect-square relative bg-gray-100 dark:bg-gray-800 rounded-md overflow-hidden">
+                            <Skeleton className="h-full w-full" />
+                        </div>
+
+                        <div className="space-y-6">
+                            <Skeleton className="h-10 w-3/4" />
+                            <Skeleton className="h-6 w-1/4" />
+                            <Skeleton className="h-20 w-full" />
+                            <Skeleton className="h-8 w-1/2" />
+                            <Skeleton className="h-8 w-3/4" />
+                            <Skeleton className="h-10 w-1/3" />
+                            <div className="space-y-2">
+                                {[1, 2, 3, 4, 5].map(i => (
+                                    <Skeleton key={i} className="h-6 w-full" />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    product && (
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                            <ProductGallery images={product.images} />
+                            <ProductInfo product={product} />
+                        </div>
+                    )
+                )}
+            </main>
+
+            {/* Footer */}
+            <footer className="border-t border-border bg-background bg-secondary mt-20">
+                <div className="container mx-auto py-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 px-4 gap-8">
+                        <FooterLinkGroup title="Shop" links={shopLinks} />
+                        <FooterLinkGroup title="Support" links={supportLinks} />
+                        <FooterLinkGroup title="Company" links={companyLinks} />
+                    </div>
+
+                    <div className="mt-8 pt-8 border-t border-gray-300 dark:border-gray-700">
+                        <p className="text-center text-gray-700 dark:text-gray-400">
+                            &copy; 2025 SoundCore. All rights reserved.
+                        </p>
+                    </div>
+                </div>
+            </footer>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
-}
+    );
+};
+
+export default Index;

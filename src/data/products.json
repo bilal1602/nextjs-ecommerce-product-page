@@ -1,0 +1,57 @@
+[
+    {
+        "id": "premium-headphones-01",
+        "name": "Premium Wireless Noise-Cancelling Headphones",
+        "price": 349.99,
+        "originalPrice": 399.99,
+        "description": "Experience studio-quality sound with our premium wireless headphones. Featuring advanced noise-cancelling technology, comfortable design, and exceptional battery life.",
+        "features": [
+            "40-hour battery life",
+            "Active noise cancellation",
+            "Bluetooth 5.2 connectivity",
+            "Voice assistant support",
+            "Foldable design for easy storage"
+        ],
+        "colors": [
+            { "name": "Matte Black", "value": "#171717", "inStock": true },
+            { "name": "Silver", "value": "#D1D5DB", "inStock": true },
+            { "name": "Navy Blue", "value": "#1E3A8A", "inStock": true },
+            { "name": "Burgundy", "value": "#9F1239", "inStock": false }
+        ],
+        "sizes": [
+            { "name": "Standard", "value": "standard", "inStock": true },
+            { "name": "Compact", "value": "compact", "inStock": true },
+            { "name": "Extended", "value": "extended", "inStock": false }
+        ],
+        "details": "<p>Our Premium Wireless Headphones deliver an exceptional audio experience with custom-engineered drivers that produce clear highs, rich mids, and deep bass.</p><p>The advanced noise-cancelling technology uses multiple microphones to continuously measure, compare, and react to outside noise. The result is that you hear more of your music and less of the world around you.</p><p>Designed for all-day comfort with memory foam ear cups and an adjustable headband that provides the perfect fit.</p>",
+        "materials": "<p><strong>Body:</strong> Premium aluminum and high-grade plastic</p><p><strong>Ear Cups:</strong> Memory foam with protein leather covering</p><p><strong>Headband:</strong> Padded with soft-touch materials and reinforced with steel</p><p><strong>Care Instructions:</strong> Clean with a soft, dry cloth. Avoid using water, solvents, or chemicals.</p>",
+        "shipping": "<p>Free shipping on orders over $50. Standard delivery: 3-5 business days.</p><p>Express delivery (2-3 business days) available for an additional fee.</p><p>30-day free returns on all items. Must be in original packaging with tags attached.</p>",
+        "images": [
+            {
+                "src": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80",
+                "alt": "Black headphones front view",
+                "color": "Matte Black"
+            },
+            {
+                "src": "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800&auto=format&fit=crop&q=80",
+                "alt": "Black headphones side view",
+                "color": "Matte Black"
+            },
+            {
+                "src": "https://images.unsplash.com/photo-1487215078519-e21cc028cb29?w=800&auto=format&fit=crop&q=80",
+                "alt": "Silver headphones front view",
+                "color": "Silver"
+            },
+            {
+                "src": "https://images.unsplash.com/photo-1524678606370-a47ad25cb82a?w=800&auto=format&fit=crop&q=80",
+                "alt": "Silver headphones side view",
+                "color": "Silver"
+            },
+            {
+                "src": "https://images.unsplash.com/photo-1599669454699-248893623440?w=800&auto=format&fit=crop&q=80",
+                "alt": "Blue headphones front view",
+                "color": "Navy Blue"
+            }
+        ]
+    }
+]
